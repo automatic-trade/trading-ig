@@ -5,9 +5,9 @@ from trading_ig_config import config
 
 app = FastAPI()
 service = rest.IGService(
-    api_key= config.api_key,
-    username= config.username,
-    password= config.password
+    api_key=config.api_key,
+    username=config.username,
+    password=config.password
 )
 
 @app.get("/")
@@ -21,6 +21,12 @@ async def fetch_open_position():
 
 @app.get("/fetch/accounts")
 async def fetch_accounts():
+    service.create_session()
+    print("Session created")
     result = service.fetch_accounts()
+
+    print(f"Type of result: {type(result)}")  # Add this line
+
+    result = result.to_dict(orient="records")
     return result
 
